@@ -43,15 +43,41 @@ Run these to verify the setup is working:
 ## Card Descriptions
 
 - Never overwrite existing card descriptions unless explicitly asked.
+- **Skip descriptions for simple/self-explanatory cards.** If the card title already makes it obvious what needs to be done (e.g. "Personal - Laundry", "House - Freezer inventory"), leave the description untouched. Only add assistant notes when the title is long, compound, or has genuine context worth unpacking.
+- **Review markdown files must always include a Description row** in the diff table, even when no change is proposed. Use `*(no change)*` for cards where the description is left as-is. This keeps the format consistent for bulk review and editing.
+- **Never summarize or truncate existing descriptions in review markdown.** Show the full current description text in the Current column. These files are used to generate the updated descriptions after review — summarizing loses information.
 - Descriptions have two sections:
   1. **User notes** (top) — written by the user (manual notes, transcribed voice memos). No header needed.
   2. **Assistant-generated content** (below) — must be clearly demarcated with a plaintext header like `--- Assistant Notes ---` or similar. This may include auto-generated subtasks, analysis, or recommendations.
+
+## MCP Server (Custom Fields)
+
+A lightweight MCP server (`mcp-custom-fields.mjs`) for reading and writing Trello custom fields. Registered as `custom-fields` in Claude Code config. If missing:
+
+```
+claude mcp add custom-fields -e TRELLO_API_KEY=<key> -e TRELLO_TOKEN=<token> -- node /Users/matt/claude-code/trello-automation/mcp-custom-fields.mjs
+```
+
+Tools:
+- `get_board_custom_fields(boardId)` — list all custom field definitions on a board
+- `get_card_custom_field_items(cardId)` — get custom field values on a card
+- `update_card_custom_fields(cardId, { duration?, importance?, urgency?, effort?, priority? })` — set number fields by name
 
 ## Custom Fields
 
 - **Duration** (Number) — Expected hours to complete. Use decimals: `0.25` = 15 min, `0.5` = 30 min, `1` = 1 hour.
 - **Importance** (Number) — 1 to 5. 5 = most important, 1 = least important.
 - **Urgency** (Number) — 1 to 5. 5 = most urgent, 1 = least urgent.
+
+### Field IDs (board `661e81039c0d0bb6dc41f0b5`)
+
+| Field | ID | Type |
+|-------|-----|------|
+| Duration | `69dbe1556ae01ac739c3a387` | number |
+| Importance | `69dbf89c568c3c4c16cc2af9` | number |
+| Urgency | `69dbf8a38d5211ad34fcafff` | number |
+| Effort | `69d3ed58a781d2ece1046e70` | number |
+| Priority | `69dbc0f2168ed7bbdfc9956a` | number |
 
 ## Card Filtering Defaults
 

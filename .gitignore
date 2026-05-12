@@ -1,2 +1,4 @@
 .env
 critical-backup-files/
+node_modules/
+reviews/
